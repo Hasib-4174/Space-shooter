@@ -36,7 +36,8 @@ is_running = True
 
 while is_running:
     dt = clock.tick() / 1000
-    print(f'fps: {int(clock.get_fps())}')
+    #print(f'fps: {int(clock.get_fps()):<4d} Directin: {player_direction} Mgnitude: {(player_direction * player_speed).magnitude()}')
+    #print(f'fps: {int(clock.get_fps()):<4d}')
     # game loop / event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -53,6 +54,13 @@ while is_running:
     keys = pygame.key.get_pressed()
     player_direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
     player_direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+
+    recent_key = pygame.key.get_just_pressed()
+    if recent_key[pygame.K_SPACE]:
+        print('fire laser')
+    space_pressed_once = keys[pygame.K_SPACE]
+
+    player_direction = player_direction.normalize() if player_direction else player_direction
     player_pos.center += player_direction * player_speed * dt
     
 
