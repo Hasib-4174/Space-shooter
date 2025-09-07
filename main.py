@@ -36,11 +36,16 @@ is_running = True
 
 while is_running:
     dt = clock.tick() / 1000
-    print(int(clock.get_fps()))
+    #print(int(clock.get_fps()))
     # game loop / event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             is_running = False
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
+            print('key: 1')
+        if event.type == pygame.MOUSEMOTION:
+            player_pos.center = event.pos
+            print(event.pos)
 
     # draw game
     display_surface.fill('darkgray')  # --bg
@@ -51,12 +56,12 @@ while is_running:
     display_surface.blit(laser_surf, laser_pos)    # laser
 
     # player --
-    if player_pos.left <= 0 or player_pos.right >= WINDOW_WIDTH:
-        player_direction.x *= -1
-    if player_pos.top <= 0 or player_pos.bottom >= WINDOW_HEIGHT:
-        player_direction.y *=-1
+    #if player_pos.left <= 0 or player_pos.right >= WINDOW_WIDTH:
+        #player_direction.x *= -1
+    #if player_pos.top <= 0 or player_pos.bottom >= WINDOW_HEIGHT:
+        #player_direction.y *=-1
     
-    player_pos.center += player_direction * player_speed * dt
+    #player_pos.center += player_direction * player_speed * dt
     display_surface.blit(player_surf, player_pos)    # player_surf
 
     pygame.display.update()
