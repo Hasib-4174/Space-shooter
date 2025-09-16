@@ -22,6 +22,12 @@ class Player(pygame.sprite.Sprite):
         if recent_keys[pygame.K_SPACE]:
             print('fire laser', end=' ')
 
+class Star(pygame.sprite.Sprite):
+    def __init__(self, groups, surf):
+        super().__init__(groups)
+        self.image = surf
+        self.rect = self.image.get_frect(center = (randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)))
+
 # setup pygame
 
 pygame.init()
@@ -36,18 +42,10 @@ surf = pygame.Surface((50, 50))
 surf.fill('yellow')
 
 all_sprite = pygame.sprite.Group()
+star_surf = pygame.image.load('./images/star.png').convert_alpha()
+for i in range(20):
+    Star(all_sprite, star_surf)
 player = Player(all_sprite)
-#all_sprite.add(player)
-
-# player surface
-#player_surf = pygame.image.load('./images/player.png').convert_alpha()
-#player_pos = player_surf.get_frect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
-#player_direction = pygame.math.Vector2()
-#player_speed = 400 
-
-
-star = pygame.image.load('./images/star.png').convert_alpha()
-star_pos = [(randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)) for _ in range(20)]
 
 meteor_surf = pygame.image.load('./images/meteor.png').convert_alpha()
 meteor_pos = meteor_surf.get_frect(center=(WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
@@ -67,39 +65,12 @@ while is_running:
             is_running = False
         if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
             print('key: 1')
-        #if event.type == pygame.MOUSEMOTION:
-            #player_pos.center = event.pos
-            #print(event.pos)
     
+    # update 
     all_sprite.update(dt)
-    #input
-    #print(pygame.mouse.get_rel())
-    #player_pos.center = pygame.mouse.get_pos()
-
-    #keys = pygame.key.get_pressed()
-    #player_direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
-    #player_direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
-
-    #player_direction = player_direction.normalize() if player_direction else player_direction
-    #player_pos.center += player_direction * player_speed * dt
-
-
-    #recent_key = pygame.key.get_just_pressed()
-    #if recent_key[pygame.K_SPACE]:
-        #print('fire laser')
-
-    
 
     # draw game
     display_surface.fill('darkgray')  # --bg
-    for pos in star_pos:
-        display_surface.blit(star, pos)   # starts
-
-    display_surface.blit(meteor_surf, meteor_pos)  # meteor
-    display_surface.blit(laser_surf, laser_pos)    # laser
-
-    #display_surface.blit(player_surf, player_pos)    # player_surf
-    #display_surface.blit(player.image, player.rect)
     all_sprite.draw(display_surface)
 
     pygame.display.update()
