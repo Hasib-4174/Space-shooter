@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
         # cooldown
         self.can_shoot = True
         self.laser_shoot_time = 0
-        self.cooldown_duration = 400
+        self.cooldown_duration = 200
 
     def laser_timer(self):
         if not self.can_shoot:
@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
 
         recent_keys = pygame.key.get_just_pressed()
         if recent_keys[pygame.K_SPACE] and self.can_shoot:
-            print('fire laser', end=' ')
+            #print('fire laser', end=' ')
             Laser(laser_surf, self.rect.midtop, all_sprite)
             self.can_shoot = False
             self.laser_shoot_time = pygame.time.get_ticks()
@@ -48,6 +48,12 @@ class Laser(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = surf
         self.rect = self.image.get_frect(midbottom = pos)
+
+    def update(self, dt):
+        self.rect.centery -= 400 * dt
+        if self.rect.bottom < 0:
+            self.kill()
+        
 # setup pygame
 
 pygame.init()
